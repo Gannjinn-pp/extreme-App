@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('home_id')->constrained()->onDelete('cascade');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+            $table->enum('bathing_type', ['bath', 'shower'])->default('bath');
             $table->timestamps();
         });
     }
