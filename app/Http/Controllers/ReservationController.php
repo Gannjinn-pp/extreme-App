@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Home;
 use Illuminate\Http\Request;
 use App\Models\Reservation;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ReservationController extends Controller
 {
+    use AuthorizesRequests; // トレイトの使用
+
     // 一覧表示
     public function index()
     {
@@ -70,6 +74,8 @@ class ReservationController extends Controller
     // 更新処理
     public function update(Request $request, Reservation $reservation)
     {
+        $this->authorize('update', $reservation);
+
         $request->validate([
             'home_id' => 'required',
             'start_time' => 'required|date_format:Y-m-d\TH:i',
@@ -100,6 +106,8 @@ class ReservationController extends Controller
     // 削除処理
     public function destroy(Reservation $reservation)
     {
+        $this->authorize('update', $reservation);
+        
         $reservation->delete();
 
         return redirect()->route('reservations.index')

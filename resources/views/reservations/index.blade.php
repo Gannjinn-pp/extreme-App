@@ -18,21 +18,22 @@
             <tr>
                 <th>No</th>
                 <th>Home</th>
+                <th>user_id</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Bathing Type</th>
-                <th width="280px">Action</th>
+                <th >Action</th>
             </tr>
             @foreach ($reservations as $reservation)
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $reservation->home->name }}</td>
+                <td>{{ $reservation->user_id }}</td>
                 <td>{{ $reservation->start_time }}</td>
                 <td>{{ $reservation->end_time }}</td>
                 <td>{{ $reservation->bathing_type }}</td>
                 <td>
                     <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST">
-                        <a class="btn btn-info" href="{{ route('reservations.show', $reservation->id) }}">Show</a>
                         <a class="btn btn-primary" href="{{ route('reservations.edit', $reservation->id) }}">Edit</a>
                         @csrf
                         @method('DELETE')
