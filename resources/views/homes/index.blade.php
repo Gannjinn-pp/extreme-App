@@ -19,7 +19,7 @@
                 <th>No</th>
                 <th>created_user_id</th>
                 <th>Name</th>
-                <th width="280px">Action</th>
+                <th>Action</th>
             </tr>
             @foreach ($homes as $home)
             <tr>

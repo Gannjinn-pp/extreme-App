@@ -74,6 +74,8 @@ class HomeController extends Controller
     // 削除処理
     public function destroy(Home $home)
     {
+        $this->authorize('delete', $home);
+
         $home->delete();
 
         return redirect()->route('homes.index')
