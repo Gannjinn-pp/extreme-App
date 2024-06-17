@@ -14,6 +14,7 @@ class Reservation extends Model
         'home_id',
         'start_time',
         'end_time',
+        'bathing_type',
     ];
 
     public function user()

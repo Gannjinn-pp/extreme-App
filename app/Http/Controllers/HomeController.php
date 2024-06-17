@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Home;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class HomeController extends Controller
 {
+    use AuthorizesRequests; // トレイトの使用
+
     // 一覧表示
     public function index()
     {
@@ -28,16 +32,22 @@ class HomeController extends Controller
             'name' => 'required',
         ]);
 
-        Home::create($request->all());
+        // 確認: 認証されたユーザーIDを取得
+        $userId = Auth::id();
+
+        if (is_null($userId)) {
+            return redirect()->route('homes.index')
+                ->with('error', 'User must be logged in to create a home.');
+        }
+
+        $home = new Home([
+            'name' => $request->name,
+            'user_id' => $userId
+        ]);
+        $home->save();
 
         return redirect()->route('homes.index')
             ->with('success', 'Home created successfully.');
-    }
-
-    // 詳細表示
-    public function show(Home $home)
-    {
-        return view('homes.show', compact('home'));
     }
 
     // 編集フォーム
@@ -49,6 +59,8 @@ class HomeController extends Controller
     // 更新処理
     public function update(Request $request, Home $home)
     {
+        $this->authorize('update', $home);
+
         $request->validate([
             'name' => 'required',
         ]);

@@ -31,8 +31,8 @@ class ReservationController extends Controller
     {
         $request->validate([
             'home_id' => 'required',
-            'start_time' => 'required|date_format:Y-m-d H:i:s',
-            'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
+            'start_time' => 'required|date_format:Y-m-d\TH:i',
+            'end_time' => 'required|date_format:Y-m-d\TH:i|after:start_time',
             'bathing_type' => 'required|in:bath,shower',
         ]);
 
@@ -47,7 +47,8 @@ class ReservationController extends Controller
             return back()->withErrors(['error' => '重複する予約時間があります']);
         }
 
-        Reservation::create($request->all());
+        // ユーザーIDを追加して予約を作成
+        Reservation::create(array_merge($request->all(), ['user_id' => auth()->id()]));
 
         return redirect()->route('reservations.index')
             ->with('success', 'Reservation created successfully.');
@@ -71,8 +72,8 @@ class ReservationController extends Controller
     {
         $request->validate([
             'home_id' => 'required',
-            'start_time' => 'required|date_format:Y-m-d H:i:s',
-            'end_time' => 'required|date_format:Y-m-d H:i:s|after:start_time',
+            'start_time' => 'required|date_format:Y-m-d\TH:i',
+            'end_time' => 'required|date_format:Y-m-d\TH:i|after:start_time',
             'bathing_type' => 'required|in:bath,shower',
         ]);
 
@@ -85,14 +86,15 @@ class ReservationController extends Controller
                     ->orWhereBetween('end_time', [$request->start_time, $request->end_time]);
             })->exists();
 
-        if ($overlap) {
-            return back()->withErrors(['error' => '重複する予約があります']);
-        }
+            if ($overlap) {
+                return back()->withErrors(['error' => '重複する予約があります']);
+            }
 
-        $reservation->update($request->all());
+            // データの更新
+            $reservation->update($request->all());
 
-        return redirect()->route('reservations.index')
-            ->with('success', 'Reservation updated successfully.');
+            return redirect()->route('reservations.index')
+                ->with('success', 'Reservation updated successfully.');
     }
 
     // 削除処理
