@@ -34,10 +34,15 @@
                 <td>{{ $reservation->bathing_type }}</td>
                 <td>
                     <form action="{{ route('reservations.destroy', $reservation->id) }}" method="POST">
-                        <a class="btn btn-primary" href="{{ route('reservations.edit', $reservation->id) }}">Edit</a>
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">Delete</button>
+                        @can('update', $reservation)
+                            <a class="btn btn-primary" href="{{ route('reservations.edit', $reservation->id) }}">Edit</a>
+                        @endcan
+
+                        @can('delete', $reservation)
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        @endcan
                     </form>
                 </td>
             </tr>

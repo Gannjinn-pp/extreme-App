@@ -3,6 +3,7 @@
 <head>
     <title>Homes</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <div class="container">
@@ -42,5 +43,6 @@
             @endforeach
         </table>
     </div>
+
 </body>
 </html>
