@@ -5,7 +5,7 @@
         <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 rounded mb-4">Add Home</a>
 
         @if ($message = Session::get('success'))
-            <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded mb-4">
+            <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded my-4">
                 <p>{{ $message }}</p>
             </div>
         @endif
@@ -23,16 +23,8 @@
                     <span class="text-gray-600 font-bold">Name:</span> {{ $home->name }}
                 </div>
                 <div class="flex space-x-2 mt-4">
-                    <form action="{{ route('homes.destroy', $home->id) }}" method="POST">
-                        @can('update', $home)
-                            <a class="btn bg-orange-500 text-white px-4 py-2 rounded" href="{{ route('homes.edit', $home->id) }}">Edit</a>
-                        @endcan
-                        @can('delete', $home)
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn bg-red-600 text-white px-4 py-2 rounded">Delete</button>
-                        @endcan
-                    </form>
+                    <a class="btn bg-orange-500 text-white px-4 py-2 rounded" href="{{ route('homes.edit', $home->id) }}">詳細</a>
+                    <a class="btn bg-slate-500 text-white px-4 py-2 rounded" href="{{ route('reservations.index') }}">予約</a>
                 </div>
             </div>
             @endforeach
