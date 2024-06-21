@@ -5,7 +5,7 @@
         <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 rounded mb-4">Add Home</a>
 
         @if ($message = Session::get('success'))
-            <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded my-4">
+            <div class="alert alert-success bg-green-100 text-green-800 p-4 rounded mx-4">
                 <p>{{ $message }}</p>
             </div>
         @endif
@@ -24,7 +24,7 @@
                 </div>
                 <div class="flex space-x-2 mt-4">
                     <a class="btn bg-orange-500 text-white px-4 py-2 rounded" href="{{ route('homes.edit', $home->id) }}">詳細</a>
-                    <a class="btn bg-slate-500 text-white px-4 py-2 rounded" href="{{ route('reservations.index') }}">予約</a>
+                    <a class="btn bg-slate-500 text-white px-4 py-2 rounded" href="{{ route('homes.reservations', $home->id) }}">予約</a>
                 </div>
             </div>
             @endforeach

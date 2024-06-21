@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Reservations</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-</head>
-<body>
+<x-app-layout>
+    <div class="container mx-auto p-4">
     <div class="container">
         <h1>Reservations</h1>
         <h2><button><a href="{{ route('dashboard')}}">back</a></button></h2>
@@ -19,6 +14,7 @@
                 <th>No</th>
                 <th>Home</th>
                 <th>user_id</th>
+                <th>_id</th>
                 <th>Start Time</th>
                 <th>End Time</th>
                 <th>Bathing Type</th>
@@ -29,6 +25,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $reservation->home->name }}</td>
                 <td>{{ $reservation->user_id }}</td>
+                <td>{{ $reservation->home_id }}</td>
                 <td>{{ $reservation->start_time }}</td>
                 <td>{{ $reservation->end_time }}</td>
                 <td>{{ $reservation->bathing_type }}</td>
@@ -49,5 +46,4 @@
             @endforeach
         </table>
     </div>
-</body>
-</html>
+</x-app-layout>

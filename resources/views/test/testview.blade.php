@@ -7,18 +7,54 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-100 text-gray-900">
-    <header class=" bg-orange-200 text-white py-4">
-        <h1 class="text-gray-600 text-4xl font-bold text-center">温泉予約サイト</h1>
-    </header>
-    <main class="p-8">
-        <section class="bg-white shadow-md rounded-lg p-6">
-            <h2 class="text-2xl font-semibold mb-4">リラックスできる温泉地</h2>
-            <p class="text-lg">ここでは素晴らしい温泉をご紹介します。</p>
-        </section>
-    </main>
-    <footer class="bg-blue-600 text-white text-center py-4 mt-8">
-        <p>© 2024 温泉予約サイト</p>
-    </footer>
+<body class="bg-gray-100 p-4">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-orange-600 mb-6">7日分のカレンダー</h1>
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2">時間</th>
+                        <!-- 画面サイズに応じて表示する日数を変更 -->
+                        @for ($day = 1; $day <= 7; $day++)
+                            <th class="px-4 py-2 hidden sm:table-cell">5/{{ $day + 7 }} (日)</th>
+                        @endfor
+                        <!-- スマホサイズのときは1日分のみ表示 -->
+                        <th class="px-4 py-2 sm:hidden">5/8 (日)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for ($i = 0; $i < 24; $i++)
+                        <tr class="border-t">
+                            <td class="border px-4 py-2 text-center">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:00</td>
+                            <!-- 画面サイズに応じて表示する日数を変更 -->
+                            @for ($day = 1; $day <= 7; $day++)
+                                <td class="border px-4 py-2 text-center hidden sm:table-cell">
+                                    <a href="#" class="block w-full h-full">〇</a>
+                                </td>
+                            @endfor
+                            <!-- スマホサイズのときは1日分のみ表示 -->
+                            <td class="border px-4 py-2 text-center sm:hidden">
+                                <a href="#" class="block w-full h-full">〇</a>
+                            </td>
+                        </tr>
+                        <tr class="border-t">
+                            <td class="border px-4 py-2 text-center">{{ str_pad($i, 2, '0', STR_PAD_LEFT) }}:30</td>
+                            <!-- 画面サイズに応じて表示する日数を変更 -->
+                            @for ($day = 1; $day <= 7; $day++)
+                                <td class="border px-4 py-2 text-center hidden sm:table-cell">
+                                    <a href="#" class="block w-full h-full">〇</a>
+                                </td>
+                            @endfor
+                            <!-- スマホサイズのときは1日分のみ表示 -->
+                            <td class="border px-4 py-2 text-center sm:hidden">
+                                <a href="#" class="block w-full h-full">〇</a>
+                            </td>
+                        </tr>
+                    @endfor
+                </tbody>
+            </table>
+        </div>
+    </div>
 </body>
 </html>

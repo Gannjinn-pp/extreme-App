@@ -61,6 +61,7 @@ class ReservationController extends Controller
     // 詳細表示
     public function show(Reservation $reservation)
     {
+        // 特定の予約を表示
         return view('reservations.show', compact('reservation'));
     }
 
@@ -107,10 +108,17 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
         $this->authorize('update', $reservation);
-        
+
         $reservation->delete();
 
         return redirect()->route('reservations.index')
             ->with('success', 'Reservation deleted successfully.');
     }
+
+    public function homeReservations(Home $home)
+{
+    $reservations = Reservation::where('home_id', $home->id)->get();
+    return view('reservations.home', compact('home', 'reservations'));
+}
+
 }
