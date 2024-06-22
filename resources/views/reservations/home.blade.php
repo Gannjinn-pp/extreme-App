@@ -3,27 +3,87 @@
         <h1 class="text-3xl font-bold text-orange-600 mb-4">Reservations for {{ $home->name }}</h1>
         <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 rounded mb-4">Back to Homes</a>
 
-        @if ($reservations->isEmpty())
-            <p>No reservations for this home.</p>
-        @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
-                @foreach ($reservations as $reservation)
-                <div class="bg-white rounded shadow-md p-4">
-                    <div class="mb-2">
-                        <span class="text-gray-600 font-bold">Reservation ID:</span> {{ $reservation->id }}
+        @php
+            $startDate = \Carbon\Carbon::now();
+            $endDate = \Carbon\Carbon::now()->addDays(4);
+            $dates = new \Carbon\CarbonPeriod($startDate, $endDate);
+
+            $startTime = \Carbon\Carbon::createFromTimeString('00:00');
+            $endTime = \Carbon\Carbon::createFromTimeString('23:30');
+            $timeSlots = new \Carbon\CarbonPeriod($startTime, '30 minutes', $endTime);
+        @endphp
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full bg-white">
+                <thead>
+                    <tr>
+                        <th class="px-4 py-2"></th>
+                        @foreach ($dates as $index => $date)
+                            <th class="px-4 py-2 {{ $index > 0 ? 'hidden sm:table-cell' : '' }}">{{ $date->format('m/d(D)') }}</th>
+                        @endforeach
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($timeSlots as $timeSlot)
+                        <tr>
+                            <td class="border px-4 py-2">{{ $timeSlot->format('H:i') }}</td>
+                            @foreach ($dates as $index => $date)
+                                @php
+                                    $startDateTime = $date->copy()->setTimeFrom($timeSlot);
+                                    $endDateTime = $startDateTime->copy()->addMinutes(30);
+
+                                    $hasReservation = $reservations->where('start_time', '>=', $startDateTime)
+                                                                   ->where('start_time', '<', $endDateTime)
+                                                                   ->isNotEmpty();
+                                @endphp
+                                <td class="border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }}"
+                                    data-start-time="{{ $startDateTime }}"
+                                    data-end-time="{{ $endDateTime }}"
+                                    onclick="openReservationModal('{{ $startDateTime->format('Y-m-d\TH:i') }}', '{{ $endDateTime->format('Y-m-d\TH:i') }}')">
+                                    {{ $hasReservation ? '●' : '' }}
+                                </td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Reservation Modal -->
+        <div id="reservationModal" class="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center hidden">
+            <div class="bg-white p-6 rounded-lg">
+                <form id="reservationForm" method="POST" action="{{ route('reservations.store') }}">
+                    @csrf
+                    <input type="hidden" name="home_id" value="{{ $home->id }}">
+                    <input type="hidden" name="start_time" id="modalStartTime">
+                    <input type="hidden" name="end_time" id="modalEndTime">
+
+                    <div class="mb-4">
+                        <label for="bathing_type" class="block text-gray-700">Bathing Type</label>
+                        <select name="bathing_type" id="bathing_type" class="form-select mt-1 block w-full">
+                            <option value="bath">Bath</option>
+                            <option value="shower">Shower</option>
+                        </select>
                     </div>
-                    <div class="mb-2">
-                        <span class="text-gray-600 font-bold">Start Time:</span> {{ $reservation->start_time }}
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="closeReservationModal()" class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
+                        <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded">Reserve</button>
                     </div>
-                    <div class="mb-2">
-                        <span class="text-gray-600 font-bold">End Time:</span> {{ $reservation->end_time }}
-                    </div>
-                    <div class="mb-2">
-                        <span class="text-gray-600 font-bold">Bathing Type:</span> {{ $reservation->bathing_type }}
-                    </div>
-                </div>
-                @endforeach
+                </form>
             </div>
-        @endif
+        </div>
+
+        <script>
+            function openReservationModal(startTime, endTime) {
+                document.getElementById('modalStartTime').value = startTime;
+                document.getElementById('modalEndTime').value = endTime;
+                document.getElementById('reservationModal').classList.remove('hidden');
+            }
+
+            function closeReservationModal() {
+                document.getElementById('reservationModal').classList.add('hidden');
+            }
+        </script>
     </div>
 </x-app-layout>

@@ -23,7 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/homes/{home}/reservations', [ReservationController::class, 'homeReservations'])->name('homes.reservations');
+Route::get('/homes/{home}/reservations', [ReservationController::class, 'homeReservations'])
+    ->name('homes.reservations');
 
 // RESTfulなルート
 Route::resource('reservations', ReservationController::class);
