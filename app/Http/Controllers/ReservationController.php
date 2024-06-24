@@ -56,7 +56,7 @@ class ReservationController extends Controller
         // ユーザーIDを追加して予約を作成
         Reservation::create(array_merge($request->all(), ['user_id' => auth()->id()]));
 
-        return redirect()->route('reservations.index')
+        return redirect()->route('dashboard')
             ->with('success', 'Reservation created successfully.');
     }
 
