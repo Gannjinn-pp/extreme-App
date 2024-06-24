@@ -13,6 +13,12 @@
             $timeSlots = new \Carbon\CarbonPeriod($startTime, '30 minutes', $endTime);
         @endphp
 
+        @if ($message = Session::get('success'))
+        <div class="alert alert-success">
+            <p>{{ $message }}</p>
+        </div>
+        @endif
+
         <div class="overflow-x-auto">
             <table class="min-w-full bg-white">
                 <thead>
@@ -32,15 +38,16 @@
                                     $startDateTime = $date->copy()->setTimeFrom($timeSlot);
                                     $endDateTime = $startDateTime->copy()->addMinutes(30);
 
-                                    $hasReservation = $reservations->where('start_time', '>=', $startDateTime)
-                                                                   ->where('start_time', '<', $endDateTime)
-                                                                   ->isNotEmpty();
+                                    $reservation = $reservations->where('start_time', '>=', $startDateTime)
+                                                                ->where('start_time', '<', $endDateTime)
+                                                                ->first();
+                                    $symbol = $reservation ? ($reservation->bathing_type == 'bath' ? '⚪︎' : '△') : '';
                                 @endphp
                                 <td class="border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }}"
                                     data-start-time="{{ $startDateTime }}"
                                     data-end-time="{{ $endDateTime }}"
                                     onclick="openReservationModal('{{ $startDateTime->format('Y-m-d\TH:i') }}', '{{ $endDateTime->format('Y-m-d\TH:i') }}')">
-                                    {{ $hasReservation ? '●' : '' }}
+                                    {{ $symbol }}
                                 </td>
                             @endforeach
                         </tr>
