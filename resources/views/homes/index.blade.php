@@ -26,6 +26,20 @@
                     <a class="btn bg-orange-500 text-white px-4 py-2 rounded" href="{{ route('homes.edit', $home->id) }}">詳細</a>
                     <a class="btn bg-slate-500 text-white px-4 py-2 rounded" href="{{ route('homes.reservations', $home->id) }}">予約</a>
                 </div>
+                {{--  --}}
+                @if (Auth::user()->homeFavorites()->where('home_id', $home->id)->exists())
+                <form action="{{ route('homes.unfavorite', $home->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-warning">Unfavorite</button>
+                </form>
+            @else
+                <form action="{{ route('homes.favorite', $home->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-success">Favorite</button>
+                </form>
+            @endif
+            {{--  --}}
             </div>
             @endforeach
         </div>

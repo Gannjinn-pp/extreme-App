@@ -7,16 +7,10 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
-                <div class="p-6 text-gray-900">
-                    <a href="{{ route('homes.index') }}" class="btn btn-primary">Add home</a>
-                </div>
-            </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
-                <div class="p-6 text-gray-900">
-                    <a href="{{ route('reservations.index') }}" class="btn btn-primary">Add Reservation</a>
-                </div>
+            <div class="flex justify-end">
+                <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 mr-2 rounded ">家を探す</a>
+                <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 rounded ">Add Home</a>
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
