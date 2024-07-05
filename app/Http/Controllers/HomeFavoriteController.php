@@ -13,21 +13,32 @@ class HomeFavoriteController extends Controller
     {
         $home = Home::findOrFail($homeId);
 
-        if (!Auth::user()->homeFavorites()->where('home_id', $homeId)->exists()) {
-            Auth::user()->homeFavorites()->create(['home_id' => $homeId]);
+        // 現在のお気に入りを取得
+        $favorite = Auth::user()->homeFavorite;
+
+        // 既にお気に入りが存在する場合の処理
+        if ($favorite && $favorite->home_id == $homeId) {
+            return redirect()->back()->with('error', 'すでにお気に入りが存在します！');
         }
 
-        return redirect()->back()->with('success', 'Home added to favorites.');
+        // 新しいお気に入りを追加
+        Auth::user()->homeFavorite()->create(['home_id' => $homeId]);
+
+        return redirect()->back()->with('success', 'お気に入りに追加されました');
     }
+
 
     public function destroy($homeId)
     {
-        $favorite = Auth::user()->homeFavorites()->where('home_id', $homeId)->first();
+        $favorite = Auth::user()->homeFavorite;
 
-        if ($favorite) {
+        if ($favorite && $favorite->home_id == $homeId) {
             $favorite->delete();
+            return redirect()->back()->with('success', 'Home removed from favorites.');
         }
 
-        return redirect()->back()->with('success', 'Home removed from favorites.');
+        return redirect()->back()->with('error', 'This home is not in your favorites.');
     }
+
+
 }

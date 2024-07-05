@@ -10,6 +10,18 @@
             </div>
         @endif
 
+        @if(session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+        @endif
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
             @foreach ($homes as $home)
             <div class="bg-white rounded shadow-md p-4">
@@ -25,21 +37,22 @@
                 <div class="flex space-x-2 mt-4">
                     <a class="btn bg-orange-500 text-white px-4 py-2 rounded" href="{{ route('homes.edit', $home->id) }}">詳細</a>
                     <a class="btn bg-slate-500 text-white px-4 py-2 rounded" href="{{ route('homes.reservations', $home->id) }}">予約</a>
-                </div>
                 {{--  --}}
-                @if (Auth::user()->homeFavorites()->where('home_id', $home->id)->exists())
+                @if (Auth::user()->homeFavorite && Auth::user()->homeFavorite->home_id == $home->id)
                 <form action="{{ route('homes.unfavorite', $home->id) }}" method="POST" style="display:inline;">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="btn btn-warning">Unfavorite</button>
+                    <button type="submit" class="btn bg-slate-500 text-white px-4 py-2 rounded">お気に入り解除</button>
                 </form>
             @else
                 <form action="{{ route('homes.favorite', $home->id) }}" method="POST" style="display:inline;">
                     @csrf
-                    <button type="submit" class="btn btn-success">Favorite</button>
+                    <button type="submit" class="btn bg-slate-500 text-white px-4 py-2 rounded">お気に入り追加</button>
                 </form>
             @endif
-            {{--  --}}
+
+                {{--  --}}
+                </div>
             </div>
             @endforeach
         </div>

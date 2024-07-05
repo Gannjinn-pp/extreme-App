@@ -21,6 +21,6 @@ class HomeFavorite extends Model
 
     public function home()
     {
-        return $this->belongsTo(Home::class);
+        return $this->hasOne(Home::class);
     }
 }
