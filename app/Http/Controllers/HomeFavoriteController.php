@@ -17,7 +17,7 @@ class HomeFavoriteController extends Controller
         $favorite = Auth::user()->homeFavorite;
 
         // 既にお気に入りが存在する場合の処理
-        if ($favorite && $favorite->home_id == $homeId) {
+        if ($favorite) {
             return redirect()->back()->with('error', 'すでにお気に入りが存在します！');
         }
 
