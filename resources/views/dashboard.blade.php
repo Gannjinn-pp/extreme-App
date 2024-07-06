@@ -9,8 +9,11 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="flex justify-end">
-                <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 mr-2 rounded ">家を探す</a>
-                <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 rounded ">Add Home</a>
+                <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">家を探す</a>
+                <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">Add Home</a>
+                @if ($homeFavorite)
+                <a href="{{ route('homes.reservations', $homeFavorite->home_id) }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">マイホーム</a>
+                @endif
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
@@ -42,6 +45,22 @@
                     @endif
                 </div>
             </div>
+
+            <!-- お気に入りの家を表示 -->
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
+                <div class="p-6 text-gray-900">
+                    <h3 class="text-lg font-semibold mb-4">Your Favorite Home</h3>
+                    @if($homeFavorite)
+                    <div class="p-4 border rounded-lg">
+                        <h4>{{ $homeFavorite->user_id }}</h4>
+                        <a href="{{ route('homes.reservations', $homeFavorite->home_id) }}" class="text-blue-500 hover:underline">View Reservations</a>
+                    </div>
+                    @else
+                        <p>You have not favorited any homes yet.</p>
+                    @endif
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>

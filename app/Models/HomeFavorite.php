@@ -11,7 +11,7 @@ class HomeFavorite extends Model
 
     protected $fillable = [
         'user_id',
-         'home_id'
+        'home_id'
         ];
 
     public function user()

@@ -9,7 +9,6 @@ use App\Models\HomeFavorite;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
 class DashboardController extends Controller
 {
     public function index() {
@@ -20,8 +19,13 @@ class DashboardController extends Controller
                                     ->orderBy('start_time')
                                     ->get();
 
-        $homefavorite = HomeFavorite::where('user_id', $user->id)->get();
+        // 現在のお気に入りを取得
+        $homeFavorite = [];
 
-        return view('dashboard' , compact('reservations'));
+        if(Auth::user()->homeFavorite){
+            $homeFavorite = HomeFavorite::where('user_id', $user->id)->first();
+        }
+
+        return view('dashboard', compact('reservations', 'homeFavorite'));
     }
 }
