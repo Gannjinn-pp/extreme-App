@@ -11,6 +11,9 @@ export default {
 
     theme: {
         extend: {
+            backgroundImage: {
+                'custom-bg': "url('/images/bgpeng.jpg')",
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
