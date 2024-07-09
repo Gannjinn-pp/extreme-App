@@ -14,7 +14,7 @@
         <!-- Scripts Taiwindの読み込み-->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-cream">
+    <body class="font-sans antialiased bg-cream ">
         <nav class="space-y-4 max-w-md mx-auto py-10">
             <img src="{{ asset('images/touji-piyo.png') }}" alt="画像">
             @auth
