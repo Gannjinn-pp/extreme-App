@@ -13,7 +13,7 @@
                     <a href="{{ route('homes.reservations', $homeFavorite->home_id) }}" class="btn bg-blue-600 text-white p-2 mx-2 rounded">マイホーム</a>
                 @endif
                 <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">家を探す</a>
-                <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">Add Home</a>
+                <a href="{{ route('homes.create') }}" class="btn bg-orange-600 text-white p-2 mx-2 rounded">家の新規作成</a>
             </div>
 
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-5">
