@@ -28,29 +28,24 @@
                         <tr>
                             <td class="border px-4 py-2">{{ $timeSlot->format('H:i') }}</td>
                             @foreach ($dates as $index => $date)
-                                @php
-                                    $startDateTime = $date->copy()->setTimeFrom($timeSlot);
-                                    $endDateTime = $startDateTime->copy()->addMinutes(30);
+                            @php
+                                $startDateTime = $date->copy()->setTimeFrom($timeSlot);
+                                $endDateTime = $startDateTime->copy()->addMinutes(30);
 
-                                    $reservation = $reservations->where('start_time', '>=', $startDateTime)
-                                                                ->where('start_time', '<', $endDateTime)
-                                                                ->first();
-                                    $symbol = '';
-                                    if ($reservation) {
-                                        if ($reservation->bathing_type == 'bath') {
-                                            $symbol = '<img src="{{ asset("images/touji-piyo.png") }}" alt="画像';
-                                        } else {
-                                            $symbol = '<img src="{{ asset("images/touji-piyo.png") }}" alt="画像';
-                                        }
-                                    }
-                                @endphp
-                                <td class=" hover:bg-orange-200 border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }}"
-                                    data-start-time="{{ $startDateTime }}"
-                                    data-end-time="{{ $endDateTime }}"
-                                    onclick="openReservationModal('{{ $startDateTime->format('Y-m-d\TH:i') }}', '{{ $endDateTime->format('Y-m-d\TH:i') }}')">
-                                    {!! $symbol !!}
-                                </td>
-                            @endforeach
+                                $reservation = $reservations->where('start_time', '>=', $startDateTime)
+                                                            ->where('start_time', '<', $endDateTime)
+                                                            ->first();
+                                $symbol = $reservation ? ($reservation->bathing_type == 'bath' ? 'お風呂' : 'シャワー') : '';
+                                $bgColor = $symbol == 'お風呂' ? 'bg-blue-200' : ($symbol == 'シャワー' ? 'bg-orange-200' : '');
+                            @endphp
+                            <td class="hover:bg-slate-400 border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }} {{ $bgColor }}"
+                                data-start-time="{{ $startDateTime }}"
+                                data-end-time="{{ $endDateTime }}"
+                                onclick="openReservationModal('{{ $startDateTime->format('Y-m-d\TH:i') }}', '{{ $endDateTime->format('Y-m-d\TH:i') }}')">
+                                {{ $symbol }}
+                            </td>
+                        @endforeach
+
                         </tr>
                     @endforeach
                 </tbody>
