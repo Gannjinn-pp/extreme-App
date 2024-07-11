@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold text-orange-600 mb-4">Edit Home</h1>
-        <h2 class="mb-4"><button class="bg-white text-orange-600 px-4 py-2 rounded"><a href="{{ route('dashboard')}}">Back</a></button></h2>
+        <h1 class="text-3xl font-bold text-orange-600 mb-4">詳細画面</h1>
+        <h2 class="mb-4"><button class="bg-white text-orange-600 px-4 py-2 rounded"><a href="{{ route('dashboard')}}">戻る</a></button></h2>
 
         @if ($errors->any())
             <div class="bg-red-100 text-red-800 p-4 rounded mb-4">
@@ -18,10 +18,10 @@
             @method('PUT')
 
             <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-bold mb-2">Name:</label>
+                <label for="name" class="block text-gray-700 font-bold mb-2">名前:</label>
                 <input type="text" class="form-control border border-gray-300 rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:border-orange-500" id="name" name="name" value="{{ $home->name }}">
             </div>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Update</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">更新</button>
         </form>
         @can('delete', $home)
             <form action="{{ route('homes.destroy' ,$home->id) }}" method="POST" class="bg-white p-6 rounded shadow-md w-2/3 mx-auto my-1">

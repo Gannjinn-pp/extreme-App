@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="container mx-auto p-4">
-        <h1 class="text-3xl font-bold text-orange-600 mb-4">Reservations for {{ $home->name }}</h1>
-        <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 rounded mb-4">Back to Homes</a>
+        <h1 class="text-3xl font-bold text-orange-600 mb-4">予約カレンダー：{{ $home->name }}</h1>
+        <a href="{{ route('homes.index') }}" class="btn bg-orange-600 text-white p-2 rounded mb-4">ホームに戻る</a>
 
         @php
             $startDate = \Carbon\Carbon::now();
@@ -13,19 +13,13 @@
             $timeSlots = new \Carbon\CarbonPeriod($startTime, '30 minutes', $endTime);
         @endphp
 
-        @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-        @endif
-
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto mt-4">
             <table class="min-w-full bg-white">
                 <thead>
                     <tr>
                         <th class="px-4 py-2"></th>
                         @foreach ($dates as $index => $date)
-                            <th class="px-4 py-2 {{ $index > 0 ? 'hidden sm:table-cell' : '' }}">{{ $date->format('m/d(D)') }}</th>
+                            <th class="px-4 py-2 {{ $index > 0 ? 'hidden sm:table-cell' : '' }}">{{ $date->format('m/d') }}</th>
                         @endforeach
                     </tr>
                 </thead>
@@ -41,13 +35,20 @@
                                     $reservation = $reservations->where('start_time', '>=', $startDateTime)
                                                                 ->where('start_time', '<', $endDateTime)
                                                                 ->first();
-                                    $symbol = $reservation ? ($reservation->bathing_type == 'bath' ? '⚪︎' : '△') : '';
+                                    $symbol = '';
+                                    if ($reservation) {
+                                        if ($reservation->bathing_type == 'bath') {
+                                            $symbol = '<img src="{{ asset("images/touji-piyo.png") }}" alt="画像';
+                                        } else {
+                                            $symbol = '<img src="{{ asset("images/touji-piyo.png") }}" alt="画像';
+                                        }
+                                    }
                                 @endphp
-                                <td class="border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }}"
+                                <td class=" hover:bg-orange-200 border px-4 py-2 text-center {{ $index > 0 ? 'hidden sm:table-cell' : '' }}"
                                     data-start-time="{{ $startDateTime }}"
                                     data-end-time="{{ $endDateTime }}"
                                     onclick="openReservationModal('{{ $startDateTime->format('Y-m-d\TH:i') }}', '{{ $endDateTime->format('Y-m-d\TH:i') }}')">
-                                    {{ $symbol }}
+                                    {!! $symbol !!}
                                 </td>
                             @endforeach
                         </tr>
@@ -66,16 +67,16 @@
                     <input type="hidden" name="end_time" id="modalEndTime">
 
                     <div class="mb-4">
-                        <label for="bathing_type" class="block text-gray-700">Bathing Type</label>
+                        <label for="bathing_type" class="block text-gray-700">入浴の種類は？</label>
                         <select name="bathing_type" id="bathing_type" class="form-select mt-1 block w-full">
-                            <option value="bath">Bath</option>
-                            <option value="shower">Shower</option>
+                            <option value="bath">お湯に浸かる</option>
+                            <option value="shower">シャワー</option>
                         </select>
                     </div>
 
                     <div class="flex justify-end">
-                        <button type="button" onclick="closeReservationModal()" class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded">Reserve</button>
+                        <button type="button" onclick="closeReservationModal()" class="mr-2 px-4 py-2 bg-gray-500 text-white rounded">キャンセル</button>
+                        <button type="submit" class="px-4 py-2 bg-orange-600 text-white rounded">予約</button>
                     </div>
                 </form>
             </div>

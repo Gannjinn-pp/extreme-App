@@ -34,7 +34,7 @@ class HomeFavoriteController extends Controller
 
         if ($favorite && $favorite->home_id == $homeId) {
             $favorite->delete();
-            return redirect()->back()->with('success', 'Home removed from favorites.');
+            return redirect()->back()->with('success', 'お気に入りから解除されました');
         }
 
         return redirect()->back()->with('error', 'This home is not in your favorites.');

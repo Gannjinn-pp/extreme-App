@@ -47,7 +47,7 @@ class HomeController extends Controller
         $home->save();
 
         return redirect()->route('homes.index')
-            ->with('success', 'Home created successfully.');
+            ->with('home_success', '家の追加ができました.');
     }
 
     // 編集フォーム
@@ -68,7 +68,7 @@ class HomeController extends Controller
         $home->update($request->all());
 
         return redirect()->route('homes.index')
-            ->with('success', 'Home updated successfully.');
+            ->with('home_success', '名前の変更ができました');
     }
 
     // 削除処理
@@ -79,6 +79,6 @@ class HomeController extends Controller
         $home->delete();
 
         return redirect()->route('homes.index')
-            ->with('success', 'Home deleted successfully.');
+            ->with('home_success', '家の削除が完了しました.');
     }
 }
